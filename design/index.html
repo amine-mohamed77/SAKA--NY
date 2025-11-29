@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAKA - Premium Real Estate Rentals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '475px',
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Animated Weather Background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #0A426E 0%, #083556 25%, #0A426E 50%, #083556 75%, #0A426E 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Snow and Rain Background */
+        .particle-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* Snow particles */
+        .snowflake {
+            position: absolute;
+            color: white;
+            user-select: none;
+            pointer-events: none;
+            font-size: 12px;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Rain particles */
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background: linear-gradient(to bottom, rgba(174, 194, 224, 0.6), rgba(174, 194, 224, 0.2));
+            border-radius: 0 0 2px 2px;
+            animation: rainfall linear infinite;
+        }
+
+        @keyframes rainfall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Legacy particle for compatibility */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-200px) translateX(-50px); }
+            75% { transform: translateY(-100px) translateX(100px); }
+        }
+
+        /* 3D Card Effects */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .card-3d:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05);
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cursor Follow Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 130, 235, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+        }
+
+        /* Button Animations */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Parallax Effect */
+        .parallax {
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Glass Morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Team Card Hover */
+        .team-card {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(0, 130, 235, 0.3);
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Animation */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 130, 235, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(0, 130, 235, 0.8); }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* 3D Mockup */
+        .mockup-3d {
+            transform: perspective(1500px) rotateY(-15deg) rotateX(5deg);
+            transition: transform 0.6s ease;
+        }
+
+        .mockup-3d:hover {
+            transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1.05);
+        }
+
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #preloader video {
+            max-width: 60%;
+            max-height: 60%;
+            object-fit: contain;
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        /* ==========================================
+           HERO SECTION - Zoom Safe Enhancements
+           ========================================== */
+
+        /* Ensure minimum height scales with viewport */
+        #hero {
+            min-height: 100vh;
+            min-height: 100svh; /* Safari mobile support */
+        }
+
+        /* Ensure all images in hero scale properly */
+        #hero img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Smooth transitions for mockup rotations - GPU acceleration */
+        #hero .transform {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        /* Prevent layout shift during fade-in animations */
+        .fade-in {
+            will-change: opacity, transform;
+        }
+
+        /* Prevent text overflow on very small screens */
+        #hero h1,
+        #hero p {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* ==========================================
+           SOLUTION SECTION - Mockup Animations
+           ========================================== */
+
+        /* Floating animation for mockups */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Floating animation - alternate direction */
+        @keyframes float-reverse {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        /* Gentle rotation animation */
+        @keyframes gentle-rotate {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(2deg) scale(1.05);
+            }
+        }
+
+        /* Apply floating animation to solution mockups */
+        .mockup-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .mockup-float-reverse {
+            animation: float-reverse 5s ease-in-out infinite;
+        }
+
+        /* Enhanced hover effect for mockups */
+        .mockup-hover {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mockup-hover:hover {
+            transform: scale(1.1) translateY(-10px);
+            filter: drop-shadow(0 2.5rem 5rem rgba(0,0,0,0.6));
+        }
+    </style>
+</head>
+<body class="bg-gray-50 overflow-x-hidden loading">
+    <!-- Preloader -->
+    <div id="preloader">
+        <video autoplay muted playsinline id="preloaderVideo">
+            <source src="../reloud/gf_sakany_splash_logo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <img src="../logo/Logo icon.svg" alt="SAKA Logo" class="h-12 w-auto">
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-[#0A426E] hover:text-[#0082EB] transition-colors duration-300 font-medium">Home</a>
+                    <a href="#problem" class="text-[#0A426E] hover:text-[#0082EB] transition-colors duration-300 font-medium">Problem</a>
+                    <a href="#solution" class="text-[#0A426E] hover:text-[#0082EB] transition-colors duration-300 font-medium">Solution</a>
+                    <a href="#team" class="text-[#0A426E] hover:text-[#0082EB] transition-colors duration-300 font-medium">Team</a>
+                    <a href="#contact" class="text-[#0A426E] hover:text-[#0082EB] transition-colors duration-300 font-medium">Contact</a>
+                </div>
+                <button class="md:hidden text-[#0A426E]" id="mobileMenuBtn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobileMenu">
+            <div class="px-4 pt-2 pb-4 space-y-2 bg-white shadow-lg">
+                <a href="#hero" class="block py-2 text-[#0A426E] hover:text-[#0082EB] transition-colors">Home</a>
+                <a href="#problem" class="block py-2 text-[#0A426E] hover:text-[#0082EB] transition-colors">Problem</a>
+                <a href="#solution" class="block py-2 text-[#0A426E] hover:text-[#0082EB] transition-colors">Solution</a>
+                <a href="#team" class="block py-2 text-[#0A426E] hover:text-[#0082EB] transition-colors">Team</a>
+                <a href="#contact" class="block py-2 text-[#0A426E] hover:text-[#0082EB] transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!--
+        ==========================================
+        HERO SECTION - ZOOM-STABLE LAYOUT (80%-125%)
+        ==========================================
+        MOCKUP SIZING STRATEGY (OPTIMIZED):
+        - Mobile:   w-44 (11rem = 176px)
+        - Small:    w-52 (13rem = 208px)
+        - Medium:   w-56 (14rem = 224px)
+        - Large:    w-64 (16rem = 256px)
+        - XL:       w-72 (18rem = 288px)
+        - 2XL:      w-80 (20rem = 320px)
+
+        WHY THIS WORKS AT 80%-125% ZOOM:
+        1. Uses REM-based Tailwind widths (w-44, w-52, etc.)
+        2. Rem units scale proportionally with browser zoom
+        3. NO flex-wrap = elements stay in single row
+        4. Center text constrained to max-w-xl (576px)
+        5. Smaller gaps (gap-8) for zoom stability
+        6. No absolute positioning for mockups
+        7. object-contain prevents image distortion
+        8. Tested at 80%, 90%, 100%, 110%, 125% zoom
+
+        TOTAL WIDTH CALCULATION:
+
+        At 100% zoom (1366px screen):
+        - Left (256px) + Gap (32px) + Center (576px) + Gap (32px) + Right (256px) = 1152px
+        - Container max-width: 1280px
+        - Available: 1280px ✅ FITS PERFECTLY
+
+        At 80% zoom (1366px screen = effective 1092px):
+        - Same calculation but container adjusts
+        - Still fits because no wrapping allowed ✅
+
+        At 125% zoom (1366px screen = effective 1707px):
+        - More space available, perfect fit ✅
+
+        NOTE: Mockups are large AND stable at all zoom levels
+        ==========================================
+    -->
+    <section id="hero" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden gradient-bg">
+
+        <!-- Particle Background (Decorative - Absolute positioned) -->
+        <div class="particle-bg" id="particleContainer"></div>
+
+        <!--
+            ==========================================
+            DECORATIVE DIAMONDS - Top Right
+            ==========================================
+        -->
+        <div class="absolute top-[15%] right-[5%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-70"></div>
+        <div class="absolute top-[18%] right-[8%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-50"></div>
+        <div class="absolute top-[21%] right-[11%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-60"></div>
+        <div class="absolute top-[24%] right-[6%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-40"></div>
+        <div class="absolute top-[27%] right-[9%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-80"></div>
+        <div class="absolute top-[30%] right-[12%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-50"></div>
+
+        <!--
+            ==========================================
+            DECORATIVE DIAMONDS - Bottom Left
+            ==========================================
+        -->
+        <div class="absolute bottom-[15%] left-[3%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-60"></div>
+        <div class="absolute bottom-[18%] left-[6%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-50"></div>
+        <div class="absolute bottom-[21%] left-[4%] w-2 h-2 md:w-3 md:h-3 bg-[#6BB6FF] transform rotate-45 opacity-70"></div>
+
+        <!--
+            ==========================================
+            MAIN CONTENT CONTAINER
+            ==========================================
+            - max-w-7xl: Caps at 1280px on large screens
+            - px-3 sm:px-4 lg:px-6: Tighter padding to maximize mockup space
+            - py-20 lg:py-0: Vertical spacing (mobile) / centered (desktop)
+            ==========================================
+        -->
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-20 lg:py-0">
+
+            <!--
+                ==========================================
+                FLEXBOX LAYOUT - THREE COLUMNS
+                ==========================================
+                - NO flex-wrap on desktop to prevent breaking at 80% zoom
+                - items-center: Vertical alignment
+                - justify-center: Horizontal centering
+                - gap-6 md:gap-8 lg:gap-8: Controlled spacing for zoom stability
+                  (1.5rem → 2rem → 2rem)
+
+                MOBILE BEHAVIOR:
+                - Stacks vertically (flex-col)
+                - Title first (order-1), mockups below (order-2, 3)
+
+                DESKTOP BEHAVIOR:
+                - Horizontal layout (lg:flex-row)
+                - NO WRAPPING - stays in one line
+                - Left mockup, center title, right mockup
+                - Fixed at 80%-125% zoom
+                ==========================================
+            -->
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-8">
+
+                <!--
+                    ==========================================
+                    LEFT MOCKUP - App Interface
+                    ==========================================
+                    RESPONSIVE WIDTH SCALING (LARGER MOCKUPS):
+                    - w-48:  12rem (192px) - Mobile
+                    - sm:w-56: 14rem (224px) - Small screens
+                    - md:w-64: 16rem (256px) - Medium screens
+                    - lg:w-72: 18rem (288px) - Large screens
+                    - xl:w-80: 20rem (320px) - XL screens
+                    - 2xl:w-96: 24rem (384px) - 2XL screens
+
+                    WHY LARGER:
+                    - Better balance with text
+                    - More prominent mockups
+                    - Showcases app details better
+                    - Still fits at 80%-125% zoom
+
+                    ROTATION:
+                    - -rotate-6: Slight tilt on mobile
+                    - lg:-rotate-12: More dramatic on desktop
+                    - Hover effect reduces rotation
+                    ==========================================
+                -->
+                <div class="fade-in flex-shrink-0 order-2 lg:order-1 w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 2xl:w-96 mockup-float" style="transition-delay: 0.1s;">
+                    <div class="transform -rotate-6 lg:-rotate-12 transition-transform duration-500 hover:-rotate-3 lg:hover:-rotate-6">
+                        <!--
+                            IMAGE SIZING:
+                            - w-full: Fills the container width (w-44 to w-80)
+                            - h-auto: Maintains aspect ratio automatically
+                            - object-contain: Scales image to fit without distortion
+                            - max-w-full: Safety constraint (prevents overflow)
+                            - drop-shadow: Enhanced shadow for depth
+                            - mockup-hover: Interactive scale and lift effect
+                        -->
+                        <img
+                            src="../Mockup/Home_Mockup.png"
+                            alt="Sakany App Interface"
+                            class="w-full h-auto object-contain max-w-full drop-shadow-[0_1.5rem_3rem_rgba(0,0,0,0.5)] mockup-hover"
+                        >
+                    </div>
+                </div>
+
+                <!--
+                    ==========================================
+                    CENTER - Brand Title Block
+                    ==========================================
+                    SIZING STRATEGY:
+                    - flex-shrink-0: Prevents compression
+                    - max-w-xl: Constrains to 36rem (576px max)
+                    - px-2 sm:px-4: Minimal horizontal padding
+                    - text-center: Centers all text
+                    - whitespace-nowrap: PREVENTS "SAKANY" from wrapping
+
+                    TITLE RESPONSIVE SIZING (REDUCED):
+                    - text-4xl: 2.25rem (36px) - Mobile
+                    - sm:text-5xl: 3rem (48px)
+                    - md:text-6xl: 3.75rem (60px)
+                    - lg:text-7xl: 4.5rem (72px)
+                    - xl:text-8xl: 6rem (96px)
+                    - whitespace-nowrap: Forces single line
+
+                    SUBTITLE RESPONSIVE SIZING (REDUCED):
+                    - text-lg: 1.125rem (18px) - Mobile
+                    - sm:text-xl: 1.25rem (20px)
+                    - md:text-2xl: 1.5rem (24px)
+                    - lg:text-3xl: 1.875rem (30px)
+                    - xl:text-4xl: 2.25rem (36px)
+                    ==========================================
+                -->
+                <div class="fade-in flex-shrink-0 order-1 lg:order-2 text-center max-w-xl px-2 sm:px-4">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-none tracking-tight mb-3 md:mb-4 whitespace-nowrap">
+                        SAKANY
+                    </h1>
+                    <p class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-[#6BB6FF] font-medium tracking-wide">
+                        YOUR SMART HOUSING
+                    </p>
+                </div>
+
+                <!--
+                    ==========================================
+                    RIGHT MOCKUP - Logo Screen
+                    ==========================================
+                    RESPONSIVE WIDTH SCALING (LARGER MOCKUPS):
+                    - w-48:  12rem (192px) - Mobile
+                    - sm:w-56: 14rem (224px) - Small screens
+                    - md:w-64: 16rem (256px) - Medium screens
+                    - lg:w-72: 18rem (288px) - Large screens
+                    - xl:w-80: 20rem (320px) - XL screens
+                    - 2xl:w-96: 24rem (384px) - 2XL screens
+
+                    SIZING STRATEGY:
+                    - Same responsive widths as left mockup
+                    - Mirror rotation (positive angles)
+                    - Same transition effects
+                    - Better balance with smaller text
+
+                    ROTATION:
+                    - rotate-6: Slight tilt on mobile (opposite of left)
+                    - lg:rotate-12: More dramatic on desktop
+                    - Hover effect reduces rotation
+                    ==========================================
+                -->
+                <div class="fade-in flex-shrink-0 order-3 w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 2xl:w-96 mockup-float-reverse" style="transition-delay: 0.2s;">
+                    <div class="transform rotate-6 lg:rotate-12 transition-transform duration-500 hover:rotate-3 lg:hover:rotate-6">
+                        <img
+                            src="../Mockup/mockrocket-capture.png"
+                            alt="Sakany Logo"
+                            class="w-full h-auto object-contain max-w-full drop-shadow-[0_1.5rem_3rem_rgba(0,0,0,0.5)] mockup-hover"
+                        >
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--
+            ==========================================
+            SCROLL INDICATOR
+            ==========================================
+        -->
+        <div class="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl md:text-3xl opacity-80"></i>
+        </div>
+    </section>
+
+    <!-- About The Problem Section -->
+    <section id="problem" class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Side - Problem Content -->
+                <div class="fade-in">
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6">
+                        The Problem:
+                    </h2>
+                    <p class="text-xl text-gray-700 mb-12 leading-relaxed">
+                        Students are trapped between overpriced rents and poor-quality housing a broken market in urgent need of fixing.
+                    </p>
+
+                    <div class="space-y-6">
+                        <!-- Problem Item 1 -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-[#0082EB]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-[#0082EB] text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Greedy middlemen and unfair pricing make student housing far more expensive than it should be.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Problem Item 2 -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-[#0082EB]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-arrow-down text-[#0082EB] text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Students fall for bad deals because the market lacks transparency, trust, and reliable reviews.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Problem Item 3 -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-[#0082EB]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-home text-[#0082EB] text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Landlords can't solve the problem because costly middlemen block direct access to students.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Decorative Arrows -->
+                    <div class="mt-8 flex gap-2">
+                        <i class="fas fa-chevron-right text-gray-300 text-2xl"></i>
+                        <i class="fas fa-chevron-right text-gray-300 text-2xl"></i>
+                        <i class="fas fa-chevron-right text-gray-300 text-2xl"></i>
+                        <i class="fas fa-chevron-right text-gray-300 text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Right Side - Professional Image -->
+                <div class="fade-in flex justify-center lg:justify-end" style="transition-delay: 0.2s;">
+                    <div class="relative w-full max-w-md">
+                        <!-- Main Image Container -->
+                        <div class="relative aspect-square rounded-3xl overflow-hidden shadow-2xl">
+                            <!-- Professional Image -->
+                            <img
+                                src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&h=800&fit=crop&q=80"
+                                alt="Student Housing Problem - Stressed Students"
+                                class="w-full h-full object-cover"
+                            >
+
+                            <!-- Overlay Gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+
+                            <!-- Text Overlay -->
+                            <div class="absolute bottom-0 left-0 right-0 p-8">
+                                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-12 h-12 bg-red-500/90 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-exclamation text-white text-xl"></i>
+                                        </div>
+                                        <h3 class="text-white font-bold text-xl">Housing Crisis</h3>
+                                    </div>
+                                    <p class="text-white/90 text-sm leading-relaxed">
+                                        Students struggling with overpriced, poor-quality accommodation
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Red Border Accent -->
+                            <div class="absolute inset-0 rounded-3xl border-4 border-red-500/30"></div>
+                        </div>
+
+                        <!-- Decorative Arrows -->
+                        <div class="absolute -top-8 -right-8 flex gap-2">
+                            <i class="fas fa-chevron-left text-gray-300 text-3xl"></i>
+                            <i class="fas fa-chevron-left text-gray-300 text-3xl"></i>
+                            <i class="fas fa-chevron-left text-gray-300 text-3xl"></i>
+                            <i class="fas fa-chevron-left text-gray-300 text-3xl"></i>
+                        </div>
+
+                        <!-- Decorative Elements -->
+                        <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-red-500/10 rounded-full blur-2xl"></div>
+                        <div class="absolute -top-4 -right-4 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--
+        ==========================================
+        OUR SOLUTION SECTION
+        ==========================================
+        LAYOUT STRUCTURE:
+        Row 1: [Left Mockup] [3 Cards Vertical] [Right Mockup]
+        Row 2: [Left Mockup] [3 Cards Vertical] [Right Mockup]
+
+        RESPONSIVE BEHAVIOR:
+        - Desktop (lg+): 3 columns (mockup | cards | mockup)
+        - Mobile: Stacked vertically (mockup, cards, mockup)
+
+        ZOOM SAFETY:
+        - All sizing uses rem units (no fixed px)
+        - Responsive Tailwind classes
+        - Works at 80%-125% zoom
+        - No absolute positioning
+        ==========================================
+    -->
+    <section id="solution" class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-[#0082EB] to-[#0A426E] relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header -->
+            <div class="text-center mb-12 lg:mb-16 fade-in">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 lg:mb-6">
+                    OUR SOLUTION
+                </h2>
+                <p class="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto px-4">
+                    We're building a seamless, student-first housing platform that eliminates middlemen, ensuring fair pricing, transparency, and convenience.
+                </p>
+            </div>
+
+            <!--
+                ==========================================
+                ROW 1: 3 Cards Vertical | Right Mockup
+                ==========================================
+                LAYOUT:
+                - Left: Smart Search, Direct Connections, Digital Contracts (vertical)
+                - Right: SearhcFilterMockup.png
+                ==========================================
+            -->
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 mb-16 lg:mb-20">
+
+                <!-- Left: 3 Cards Stacked Vertically -->
+                <div class="fade-in flex-shrink-0 order-1 w-full lg:max-w-md xl:max-w-lg space-y-4 lg:space-y-6" style="transition-delay: 0.1s;">
+
+                    <!-- Card 1: Smart Search & Filters -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl lg:rounded-2xl p-5 lg:p-6 hover:bg-white/15 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-search text-white text-lg lg:text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg lg:text-xl font-bold text-white mb-1.5 lg:mb-2">Smart Search & Filters</h3>
+                                <p class="text-sm text-white/80 leading-relaxed">
+                                    Students find verified listings that match their budget, location, and preferences instantly.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Direct Connections -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl lg:rounded-2xl p-5 lg:p-6 hover:bg-white/15 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-shield text-white text-lg lg:text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg lg:text-xl font-bold text-white mb-1.5 lg:mb-2">Direct Connections</h3>
+                                <p class="text-sm text-white/80 leading-relaxed">
+                                    No brokers, no hidden fees—just secure, straightforward renting between students and owners.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Digital Contracts -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl lg:rounded-2xl p-5 lg:p-6 hover:bg-white/15 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-file-signature text-white text-lg lg:text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg lg:text-xl font-bold text-white mb-1.5 lg:mb-2">Digital Contracts</h3>
+                                <p class="text-sm text-white/80 leading-relaxed">
+                                    Sign contracts digitally with legally binding e-signatures and manage payments online from your phone.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Mockup: Search Filter -->
+                <div class="fade-in flex-shrink-0 order-2 w-64 sm:w-72 md:w-80 lg:w-96 xl:w-[28rem] 2xl:w-[32rem] mockup-float" style="transition-delay: 0.2s;">
+                    <img
+                        src="../Mockup/SearhcFilterMockup.png"
+                        alt="Sakany Search & Filter"
+                        class="w-full h-auto object-contain max-w-full drop-shadow-[0_1.5rem_3rem_rgba(0,0,0,0.4)] mockup-hover"
+                    >
+                </div>
+
+            </div>
+
+            <!--
+                ==========================================
+                ROW 2: Left Mockup | 3 Cards Vertical
+                ==========================================
+                LAYOUT:
+                - Left: Comunit_Mockup.png
+                - Right: Community Reviews, Secure Agreements, Student Ecosystem (vertical)
+                ==========================================
+            -->
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
+
+                <!-- Left Mockup: Community -->
+                <div class="fade-in flex-shrink-0 order-2 lg:order-1 w-64 sm:w-72 md:w-80 lg:w-96 xl:w-[28rem] 2xl:w-[32rem] mockup-float-reverse" style="transition-delay: 0.3s;">
+                    <img
+                        src="../Mockup/Comunit_Mockup.png"
+                        alt="Sakany Community"
+                        class="w-full h-auto object-contain max-w-full drop-shadow-[0_1.5rem_3rem_rgba(0,0,0,0.4)] mockup-hover"
+                    >
+                </div>
+
+                <!-- Right: 3 Cards Stacked Vertically -->
+                <div class="fade-in flex-shrink-0 order-1 lg:order-2 w-full lg:max-w-md xl:max-w-lg space-y-4 lg:space-y-6" style="transition-delay: 0.4s;">
+
+                    <!-- Card 4: Community Reviews -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl lg:rounded-2xl p-5 lg:p-6 hover:bg-white/15 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-comments text-white text-lg lg:text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg lg:text-xl font-bold text-white mb-1.5 lg:mb-2">Community Reviews</h3>
+                                <p class="text-sm text-white/80 leading-relaxed">
+                                    Real feedback from students ensures trust and prevents scams through verified experiences.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Secure Agreements -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl lg:rounded-2xl p-5 lg:p-6 hover:bg-white/15 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-shield-alt text-white text-lg lg:text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg lg:text-xl font-bold text-white mb-1.5 lg:mb-2">Secure Agreements</h3>
+                                <p class="text-sm text-white/80 leading-relaxed">
+                                    No more verbal promises; our system ensures legal clarity and protection for all parties.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Student Ecosystem -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-xl lg:rounded-2xl p-5 lg:p-6 hover:bg-white/15 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-lightbulb text-white text-lg lg:text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg lg:text-xl font-bold text-white mb-1.5 lg:mb-2">Student Ecosystem</h3>
+                                <p class="text-sm text-white/80 leading-relaxed">
+                                    Future integrations with transport, workspaces, and local services make student life easier.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Our Vision Section -->
+    <section id="vision" class="py-32 bg-gradient-to-r from-[#0082EB] via-[#0A426E] to-[#0082EB] bg-[length:200%_100%] animate-[gradientShift_10s_ease_infinite] relative overflow-hidden">
+        <!-- Animated Background Effects -->
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/3 rounded-full blur-3xl"></div>
+        </div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute top-[20%] left-[10%] w-3 h-3 bg-white/40 rounded-full animate-pulse"></div>
+        <div class="absolute top-[30%] right-[15%] w-2 h-2 bg-white/30 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+        <div class="absolute bottom-[25%] left-[20%] w-2 h-2 bg-white/30 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-[35%] right-[10%] w-3 h-3 bg-white/40 rounded-full animate-pulse" style="animation-delay: 1.5s;"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+            <!-- Icon with Glow Effect -->
+            <div class="mb-8">
+                <div class="inline-block relative">
+                    <div class="absolute inset-0 bg-white/20 blur-2xl rounded-full"></div>
+                    <div class="relative bg-white/10 backdrop-blur-sm w-24 h-24 rounded-full flex items-center justify-center border-2 border-white/20 shadow-2xl">
+                        <i class="fas fa-eye text-white text-4xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-10">
+                Our <span class="bg-gradient-to-r from-blue-200 via-white to-blue-200 bg-clip-text text-transparent">Vision</span>
+            </h2>
+
+            <!-- Vision Statement Card -->
+            <div class="relative max-w-4xl mx-auto">
+                <!-- Card Glow Effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 blur-xl rounded-3xl"></div>
+
+                <!-- Card Content -->
+                <div class="relative bg-white/5 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl">
+                    <p class="text-xl sm:text-2xl md:text-3xl text-white leading-relaxed font-light">
+                        To build the most trusted housing platform that empowers every student to find
+                        <span class="font-semibold text-blue-200">safe</span>,
+                        <span class="font-semibold text-blue-200">fair</span>, and
+                        <span class="font-semibold text-blue-200">affordable</span> accommodation with
+                        <span class="font-bold text-white underline decoration-blue-300">zero exploitation</span>.
+                    </p>
+                </div>
+
+                <!-- Decorative Corner Accents -->
+                <div class="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-blue-300 rounded-tl-lg"></div>
+                <div class="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-blue-300 rounded-tr-lg"></div>
+                <div class="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-blue-300 rounded-bl-lg"></div>
+                <div class="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-blue-300 rounded-br-lg"></div>
+            </div>
+
+            <!-- Bottom Decorative Line -->
+            <div class="mt-12 flex justify-center">
+                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-blue-300 to-transparent rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-gradient-to-br from-[#0A426E] via-[#083556] to-[#0A426E] relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 lg:mb-20 fade-in">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
+                    Our <span class="bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">Team</span>
+                </h2>
+                <p class="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto">
+                    Passionate individuals working together to transform the rental experience
+                </p>
+            </div>
+
+            <!-- Team Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 max-w-5xl mx-auto">
+
+                <!-- Team Member 1: Khaled Eltahawy -->
+                <div class="fade-in text-center group">
+                    <!-- Circular Photo -->
+                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 mx-auto mb-6">
+                        <div class="absolute inset-0 bg-white rounded-full p-2 shadow-2xl group-hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-500">
+                            <div class="relative w-full h-full rounded-full overflow-hidden ring-4 ring-white/20 group-hover:ring-white/40 transition-all duration-500">
+                                <img
+                                    src="../team/k.jpg"
+                                    alt="Khaled Eltahawy"
+                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 group-hover:text-[#6BB6FF] transition-colors duration-300">
+                        Khaled Eltahawy
+                    </h3>
+                    <p class="text-sm sm:text-base lg:text-lg text-white/90 font-semibold mb-1">
+                        Co-Founder & Support Engineer
+                    </p>
+                    <p class="text-sm sm:text-base text-white/70 mb-6">
+                        @Microsoft
+                    </p>
+
+                    <!-- Social Links -->
+                    <div class="flex gap-3 justify-center">
+                        <a href="https://www.linkedin.com/in/khaled-el-tahawy-8b8ab61b8" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[#0082EB] text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/kiitoxd" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gray-800 text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:khaled.eltahawy11@gmail.com" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-red-500 text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Team Member 2: Mohamed Attia -->
+                <div class="fade-in text-center group" style="transition-delay: 0.1s;">
+                    <!-- Circular Photo -->
+                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 mx-auto mb-6">
+                        <div class="absolute inset-0 bg-white rounded-full p-2 shadow-2xl group-hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-500">
+                            <div class="relative w-full h-full rounded-full overflow-hidden ring-4 ring-white/20 group-hover:ring-white/40 transition-all duration-500">
+                                <img
+                                    src="../team/attia.jpg"
+                                    alt="Mohamed Attia"
+                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 group-hover:text-[#6BB6FF] transition-colors duration-300">
+                        Mohammed Attia
+                    </h3>
+                    <p class="text-sm sm:text-base lg:text-lg text-white/90 font-semibold mb-1">
+                        Co-Founder & Mobile App Developer
+                    </p>
+                    <p class="text-sm sm:text-base text-white/70 mb-6">
+                        @Systemira
+                    </p>
+
+                    <!-- Social Links -->
+                    <div class="flex gap-3 justify-center">
+                        <a href="https://www.linkedin.com/in/mohammed-attia-7853a2238" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[#0082EB] text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/Attia64" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gray-800 text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:mohammedattiaofficial@gmail.com" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-red-500 text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Team Member 3: Aymen Chabbeh -->
+                <div class="fade-in text-center group" style="transition-delay: 0.2s;">
+                    <!-- Circular Photo -->
+                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 mx-auto mb-6">
+                        <div class="absolute inset-0 bg-white rounded-full p-2 shadow-2xl group-hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-500">
+                            <div class="relative w-full h-full rounded-full overflow-hidden ring-4 ring-white/20 group-hover:ring-white/40 transition-all duration-500">
+                                <img
+                                    src="../team/ayman.jpg"
+                                    alt="Aymen Chabbeh"
+                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 group-hover:text-[#6BB6FF] transition-colors duration-300">
+                        Aymen Chabbeh
+                    </h3>
+                    <p class="text-sm sm:text-base lg:text-lg text-white/90 font-semibold mb-1">
+                        Co-Founder & Backend Developer
+                    </p>
+                    <p class="text-sm sm:text-base text-white/70 mb-6">
+                        @SanaSoft
+                    </p>
+
+                    <!-- Social Links -->
+                    <div class="flex gap-3 justify-center">
+                        <a href="https://www.linkedin.com/in/chabbeh-aymen" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[#0082EB] text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/ChabbehAymen" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gray-800 text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:devaymen15.5.3@gmail.com" class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-red-500 text-white transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6">
+                    Get In <span class="bg-gradient-to-r from-[#0082EB] to-[#0A426E] bg-clip-text text-transparent">Touch</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                </p>
+            </div>
+
+            <div class="fade-in bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+                <form action="https://formsubmit.co/mohammedattiaofficial@gmail.com" method="POST" class="space-y-6">
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_subject" value="New Contact Form Submission - SAKA">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
+                            <input type="text" name="name" required class="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-[#0082EB] focus:outline-none transition-colors duration-300" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                            <input type="email" name="email" required class="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-[#0082EB] focus:outline-none transition-colors duration-300" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-gray-700 font-semibold mb-2">Message</label>
+                        <textarea name="message" rows="6" required class="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-[#0082EB] focus:outline-none transition-colors duration-300 resize-none" placeholder="Tell us about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full bg-gradient-to-r from-[#0082EB] to-[#0A426E] text-white px-8 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                        Send Message
+                        <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <img src="../logo/Logo icon.svg" alt="SAKA Logo" class="h-12 w-auto mb-4">
+                    <p class="text-gray-400">Making home rentals easy and safe for everyone.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#hero" class="text-gray-400 hover:text-[#0082EB] transition-colors">Home</a></li>
+                        <li><a href="#solution" class="text-gray-400 hover:text-[#0082EB] transition-colors">Solution</a></li>
+                        <li><a href="#team" class="text-gray-400 hover:text-[#0082EB] transition-colors">Team</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-[#0082EB] transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-[#0082EB] transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-[#0082EB] transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-[#0082EB] transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Follow Us</h4>
+                    <div class="flex gap-3">
+                        <a href="https://www.facebook.com/profile.php?id=61579680795270" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#1877F2] transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/sakany" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#0A66C2] transition-all duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/sakany.org4/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737] transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 SAKA. All rights reserved. Built with ❤️ for better rentals.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // Preloader Video Control
+        const preloader = document.getElementById('preloader');
+        const preloaderVideo = document.getElementById('preloaderVideo');
+        
+        // Hide preloader when video ends
+        preloaderVideo.addEventListener('ended', () => {
+            preloader.classList.add('fade-out');
+            document.body.classList.remove('loading');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+
+        // Fallback: Hide preloader after 5 seconds if video doesn't load
+        setTimeout(() => {
+            if (!preloader.classList.contains('fade-out')) {
+                preloader.classList.add('fade-out');
+                document.body.classList.remove('loading');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }
+        }, 5000);
+
+        // Cursor Glow Effect
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.transform = `translate(${e.clientX - 150}px, ${e.clientY - 150}px)`;
+        });
+
+        // Snow and Rain Background
+        const particleContainer = document.getElementById('particleContainer');
+        
+        // Create snowflakes
+        for (let i = 0; i < 50; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.animationDelay = Math.random() * 2 + 's';
+            particleContainer.appendChild(snowflake);
+        }
+        
+        // Create raindrops
+        for (let i = 0; i < 100; i++) {
+            const raindrop = document.createElement('div');
+            raindrop.className = 'raindrop';
+            raindrop.style.left = Math.random() * 100 + '%';
+            raindrop.style.animationDuration = Math.random() * 0.5 + 0.5 + 's';
+            raindrop.style.animationDelay = Math.random() * 2 + 's';
+            particleContainer.appendChild(raindrop);
+        }
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Parallax Effect on Scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax');
+            
+            parallaxElements.forEach(el => {
+                const speed = el.dataset.speed || 0.5;
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Form submission is handled by FormSubmit.co
+        // No JavaScript needed - form submits directly to your email!
+
+        // Add smooth reveal to sections on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach((el, index) => {
+                    setTimeout(() => {
+                        el.style.transitionDelay = index * 0.1 + 's';
+                    }, index * 50);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
