@@ -1,4 +1,4 @@
-# 🎓 UniHousing – Landing Page  
+# 🎓 SAKA--NY – Landing Page  
 A modern landing page for a student housing assistance platform
 
 This project is the official **Landing Page for UniHousing**, a platform designed to help university students easily find affordable and nearby accommodation.  
